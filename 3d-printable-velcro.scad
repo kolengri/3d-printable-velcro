@@ -48,18 +48,21 @@ Length = 50; //[10:1:500]
 Thickness = 0.6; //[0.2:0.1:5]
 
 // Horizontal border offset from towers in mm
-BorderH = 5; //[1:1:100]
+Border_horizontal = 5; //[1:1:100]
 
 // Vertical border offset from towers in mm
-BorderV = 5; //[1:1:100]
+Border_vertical = 5; //[1:1:100]
 
 /*[ Quality Settings ]*/
 
 // Number of fragments for cylinders (higher = smoother but slower)
-Resolution = 12; //[5:100]
+Resolution = 8; //[5:100]
 
 // Preview mode (faster rendering, lower quality)
-Preview_mode = false; //[true, false]
+Preview_mode = true; //[true, false]
+
+// Maximum number of towers per dimension (prevents excessive geometry)
+Max_towers_per_dimension = 50; //[10:1:100]
 
 /*[ Hidden Parameters ]*/
 
@@ -79,25 +82,32 @@ function Interference_factor() = Base_diameter / 12.5;
 // Calculate spacing between towers
 function Spacing() = Base_diameter * 4.4 + Interference * Interference_factor();
 
-// Calculate number of horizontal tower sets
-function Horizontal_count() = max(1, floor((Width - BorderH * 2) / Spacing()));
+// Calculate number of horizontal tower sets with safety limit
+function Horizontal_count() = min(
+    Max_towers_per_dimension,
+    max(1, floor((Width - Border_horizontal * 2) / Spacing()))
+);
 
-// Calculate number of vertical tower sets  
-function Vertical_count() = max(1, floor((Length - BorderV * 2) / (Spacing() / 2)));
+// Calculate number of vertical tower sets with safety limit
+function Vertical_count() = min(
+    Max_towers_per_dimension,
+    max(1, floor((Length - Border_vertical * 2) / (Spacing() / 2)))
+);
 
 // Calculate actual pattern dimensions
-function Actual_width() = Horizontal_count() * Spacing() + BorderH * 2;
-function Actual_length() = Vertical_count() * (Spacing() / 2) + BorderV * 2;
+function Actual_width() = Horizontal_count() * Spacing() + Border_horizontal * 2;
+function Actual_length() = Vertical_count() * (Spacing() / 2) + Border_vertical * 2;
 
 // ===== GEOMETRY MODULES =====
 
-// Single tower geometry
+// Single tower geometry with optimized rendering
 module tower() {
     cylinder(
         h = Height(), 
         r1 = Base_diameter / 2, 
         r2 = Top_diameter() / 2, 
-        center = false
+        center = false,
+        $fn = $fn
     );
 }
 
@@ -130,10 +140,10 @@ module base_plate() {
     v = h / 2;
     
     // Calculate actual dimensions
-    plate_width = h * Horizontal_count() + BorderH * 2 - h / 2;
-    plate_length = v * Vertical_count() + BorderV * 2 - v / 2;
+    plate_width = h * Horizontal_count() + Border_horizontal * 2 - h / 2;
+    plate_length = v * Vertical_count() + Border_vertical * 2 - v / 2;
     
-    translate([-BorderH, -BorderV, -Thickness]) 
+    translate([-Border_horizontal, -Border_vertical, -Thickness]) 
         cube([plate_width, plate_length, Thickness]);
 }
 
@@ -144,8 +154,16 @@ echo("=== Velcro Pattern Info ===");
 echo("Desired dimensions:", Width, "x", Length, "mm");
 echo("Actual dimensions:", Actual_width(), "x", Actual_length(), "mm");
 echo("Tower count:", Horizontal_count(), "x", Vertical_count());
+echo("Total towers:", Horizontal_count() * Vertical_count() * 2);
 echo("Spacing:", Spacing(), "mm");
 echo("Tower height:", Height(), "mm");
+echo("Preview mode:", Preview_mode ? "ON" : "OFF");
+
+// Warning if too many towers
+total_towers = Horizontal_count() * Vertical_count() * 2;
+if (total_towers > 1000) {
+    echo("WARNING: Too many towers (", total_towers, "). Consider reducing dimensions or increasing spacing.");
+}
 
 // Main assembly
 union() {
