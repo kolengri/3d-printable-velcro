@@ -1,4 +1,4 @@
-# 3D-Printable Parametric Velcro Generator
+# 3D-Printable Parametric Velcro
 
 ![SCAD Screenshot](docs/images/scad-screenshot.png)
 
