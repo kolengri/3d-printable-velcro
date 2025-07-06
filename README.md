@@ -16,10 +16,16 @@ This project represents an improved version of a 3D printable velcro generator. 
 ### Customizable parameters:
 
 - **Tower dimensions**: base diameter, height, top diameter
-- **Pattern dimensions**: width and length of velcro
+- **Pattern dimensions**: width and length of velcro with automatic ratio adjustment
 - **Base plate**: thickness and borders
 - **Print quality**: resolution and preview mode
 - **Grip strength**: interference adjustment between elements
+
+### Key improvements:
+
+- **Automatic dimension adjustment**: The velcro pattern has a 2:1 ratio (width:height), so for square results, the length is automatically doubled when `Auto_adjust_dimensions` is enabled
+- **User-friendly**: No need to manually calculate the correct dimensions
+- **Flexible**: Can be disabled for custom ratios
 
 ### Technical characteristics:
 
@@ -62,6 +68,7 @@ This project represents an improved version of a 3D printable velcro generator. 
 
 - `Width` - velcro width (10-500 mm)
 - `Length` - velcro length (10-500 mm)
+- `Auto_adjust_dimensions` - automatically adjust length for proper velcro pattern ratio (recommended: true)
 
 ### Base plate:
 
@@ -102,6 +109,16 @@ Length = 30;
 Base_diameter = 1.2;
 Height_multiplier = 3.0;
 Interference = -5;
+Auto_adjust_dimensions = true; // Length will be automatically doubled to 60mm
+```
+
+### Custom ratio velcro:
+
+```
+Width = 40;
+Length = 80;
+Base_diameter = 1.5;
+Auto_adjust_dimensions = false; // Use exact dimensions without adjustment
 ```
 
 ## License

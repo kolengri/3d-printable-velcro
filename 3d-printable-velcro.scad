@@ -42,6 +42,10 @@ Width = 50; //[10:1:500]
 // Desired length of the velcro pattern in mm  
 Length = 50; //[10:1:500]
 
+// Auto-adjust dimensions for proper velcro pattern ratio (recommended: true)
+// When enabled, Length is automatically doubled to compensate for the 2:1 pattern ratio
+Auto_adjust_dimensions = true; //[true, false]
+
 /*[ Base Plate ]*/
 
 // Thickness of the base plate in mm
@@ -85,14 +89,18 @@ function Spacing() = Base_diameter * 4.4 + Interference * Interference_factor();
 // Calculate number of horizontal tower sets with safety limit
 function Horizontal_count() = min(
     Max_towers_per_dimension,
-    max(1, floor((Width - Border_horizontal * 2) / Spacing()))
+    max(1, floor((Adjusted_width() - Border_horizontal * 2) / Spacing()))
 );
 
 // Calculate number of vertical tower sets with safety limit
 function Vertical_count() = min(
     Max_towers_per_dimension,
-    max(1, floor((Length - Border_vertical * 2) / (Spacing() / 2)))
+    max(1, floor((Adjusted_length() - Border_vertical * 2) / (Spacing() / 2)))
 );
+
+// Auto-adjust dimensions for proper velcro pattern ratio
+function Adjusted_width() = Auto_adjust_dimensions ? Width : Width;
+function Adjusted_length() = Auto_adjust_dimensions ? Length * 2 : Length;
 
 // Calculate actual pattern dimensions
 function Actual_width() = Horizontal_count() * Spacing() + Border_horizontal * 2;
@@ -152,6 +160,9 @@ module base_plate() {
 // Show information in console
 echo("=== Velcro Pattern Info ===");
 echo("Desired dimensions:", Width, "x", Length, "mm");
+if (Auto_adjust_dimensions) {
+    echo("Auto-adjusted dimensions:", Adjusted_width(), "x", Adjusted_length(), "mm (for proper velcro ratio)");
+}
 echo("Actual dimensions:", Actual_width(), "x", Actual_length(), "mm");
 echo("Tower count:", Horizontal_count(), "x", Vertical_count());
 echo("Total towers:", Horizontal_count() * Vertical_count() * 2);
