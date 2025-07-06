@@ -36,15 +36,16 @@ Interference = 0; //[-10:10]
 
 /*[ Pattern Dimensions ]*/
 
+// Auto-adjust dimensions for proper velcro pattern ratio (recommended: true)
+// When enabled, Length is automatically doubled to compensate for the 2:1 pattern ratio
+Auto_adjust_dimensions = true; //[true, false]
+
 // Desired width of the velcro pattern in mm
 Width = 50; //[10:1:500]
 
 // Desired length of the velcro pattern in mm  
 Length = 50; //[10:1:500]
 
-// Auto-adjust dimensions for proper velcro pattern ratio (recommended: true)
-// When enabled, Length is automatically doubled to compensate for the 2:1 pattern ratio
-Auto_adjust_dimensions = true; //[true, false]
 
 /*[ Base Plate ]*/
 
