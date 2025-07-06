@@ -1,5 +1,9 @@
 # 3D-Printable Velcro Generator
 
+![SCAD Screenshot](docs/images/scad-screenshot.png)
+
+[YouTube](https://www.youtube.com/watch?v=5rzHbZ7zt-w)
+
 A parametric velcro generator for 3D printing, created in OpenSCAD. This project allows you to create customizable velcro strips of various sizes and characteristics.
 
 ## Description
