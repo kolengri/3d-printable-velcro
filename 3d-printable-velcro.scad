@@ -36,9 +36,9 @@ Interference = 0; //[-10:10]
 
 /*[ Pattern Dimensions ]*/
 
-// Auto-adjust dimensions for proper velcro pattern ratio (recommended: true)
+// Auto-adjust dimensions for proper velcro pattern ratio
 // When enabled, Length is automatically doubled to compensate for the 2:1 pattern ratio
-Auto_adjust_dimensions = true; //[true, false]
+Auto_adjust_dimensions = false; //[true, false]
 
 // Desired width of the velcro pattern in mm
 Width = 50; //[10:1:500]
