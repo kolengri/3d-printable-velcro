@@ -140,6 +140,7 @@ This project is based on original work under CC0 Public Domain license. This ver
 - [Original model on Printables](https://www.printables.com/model/33302-printable-velcro)
 - [MM Printing parametric version](https://www.printables.com/model/543802-printable-velcro)
 - [Parametric SCAD version](https://www.printables.com/model/568587-parametric-3d-printable-velcro)
+- [Model on MakerWorld](https://makerworld.com/en/models/1580289-3d-printable-parametric-velcro#profileId-1664756)
 
 ## Support
 
